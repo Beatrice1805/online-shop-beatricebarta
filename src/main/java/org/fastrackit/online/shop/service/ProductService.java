@@ -68,33 +68,38 @@ public class ProductService {
          public Page<Product> getProducts(GetProductsRequest request, Pageable pageable){
         LOGGER.info("Searching products :()", request);
         if (request!= null){
-            if request.getPartialName() != null&&
-                    return productRepository.findByNameContainingAndQuantityGreaterThanEqual();
-             request,getPartialName(),request.getMinQuantity(), pageable);
+            if(request.getPartialName() != null && request.getMinQuantity() !=null){
+            return productRepository.findByNameContainingAndQuantityGreaterThanEqual(request.getPartialName(),
+            request,getQuantity(),pageable;
 
              }else if (request.getPartialName() != null) {
-            return productRepository.findByNameContaining(
-                    (String) request.getPartialName(), pageable);
-
+                return productRepository.findByNameContaining(
+                        (String) request.getPartialName(), pageable);
+            }
         }
             return productRepository.findAll(pageable);
+         
 
 
-
-        public Product updateProduct(long id, SaveProductRequest request) ;{
+        public Product updateProduct(long id, SaveProductRequest request){
         LOGGER.info("Updating product {}:{}",id , request);
             Product product = getProduct(id);
             BeanUtils.copyProperties(request, product);
             return (Page<Product>) productRepository.save(product);
 
-        }
-        public void deleteProduct(long id){
+        public void deleteProduct(long id);
              LOGGER.info("Deleting product {}", id);
             productRepository.deleteById(id);
         }
 }
 
-    private Object getPartialName() {
+    private void getQuantity() {
     }
 
+    public void updateProduct(long id, SaveProductRequest request) {
+    }
 
+    public void deleteProduct(long id) {
+    }
+}
+   
