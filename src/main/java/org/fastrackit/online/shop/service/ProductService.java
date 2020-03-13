@@ -96,7 +96,8 @@ public class ProductService {
     private void getQuantity() {
     }
 
-    public void updateProduct(long id, SaveProductRequest request) {
+    public Product updateProduct(long id, SaveProductRequest request) {
+        return null;
     }
 
     public void deleteProduct(long id) {
