@@ -1,12 +1,15 @@
 package org.fastrackit.online.shop.service;
 
 import org.fastrackit.online.shop.domain.Product;
+import org.fastrackit.online.shop.exception.ResourceNotFoundException;
 import org.fastrackit.online.shop.persistance.persistance.ProductRepository;
 import org.fastrackit.online.shop.transfer.SaveProductRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -32,7 +35,21 @@ public class ProductService {
         return productRepository.save(product);
 
     }
+public Product  getProduct(long id){
+        LOGGER.info("Retrieving product ()",id );
 
+        Optional<Product> productOptional = productRepository.findById(id);
+////
+////        if (productOptional.isPresent()) {
+////            return productOptional.get();
+////        } else {
+////    throw new ResourceNotFoundException("Product" +id + "not found.");
+//}
+return productRepository.findById(id)
+        //lambda expressions
+        .orElseThrow(() -> new ResourceNotFoundException(
+                    "Product" +id + "not found."));
+        };
 }
 
 
