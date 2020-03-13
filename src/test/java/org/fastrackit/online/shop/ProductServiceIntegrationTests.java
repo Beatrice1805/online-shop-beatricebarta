@@ -3,7 +3,7 @@ package org.fastrackit.online.shop;
 import org.fastrackit.online.shop.domain.Product;
 import org.fastrackit.online.shop.exception.ResourceNotFoundException;
 import org.fastrackit.online.shop.service.ProductService;
-import org.fastrackit.online.shop.transfer.SaveProductRequest;
+import org.fastrackit.online.shop.transfer.product.SaveProductRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +78,7 @@ void createProduct_whenMissingName_thenExceptionIsThrown() {
         assertThat(updatedProduct.getName(),is(request.getName()));
         assertThat(updatedProduct.getDescription(),is(request.getDescription()));
         assertThat(updatedProduct.getPrice(),is(request.getPrice()));
-        assertThat(updatedProduct.getQuantity(); is(request.getQuantity());
+        assertThat(updatedProduct.getQuantity(), is(request.getQuantity()));
 
 }
     @Test
