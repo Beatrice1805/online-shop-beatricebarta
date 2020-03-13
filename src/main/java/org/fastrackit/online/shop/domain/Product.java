@@ -1,11 +1,14 @@
 package org.fastrackit.online.shop.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 @Entity
 public class Product {
+    @Id
+    @GeneratedValue
     private long id;
     @NotNull
     private String name;
