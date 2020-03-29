@@ -2,7 +2,7 @@ package org.fastrackit.online.shop.service;
 
 import org.fastrackit.online.shop.domain.Product;
 import org.fastrackit.online.shop.exception.ResourceNotFoundException;
-import org.fastrackit.online.shop.persistance.persistance.ProductRepository;
+import org.fastrackit.online.shop.persistance.ProductRepository;
 import org.fastrackit.online.shop.transfer.product.GetProductsRequest;
 import org.fastrackit.online.shop.transfer.product.SaveProductRequest;
 import org.slf4j.Logger;
@@ -19,10 +19,10 @@ import java.util.Optional;
 public class ProductService {
     private static final Logger LOGGER = LoggerFactory.getLogger((ProductService.class));
 
-// Inversion of Control(IoC)
+    // Inversion of Control(IoC)
     private final ProductRepository productRepository;
 
-//dependency injection (from Ioc container)
+    //dependency injection (from Ioc container)
     @Autowired
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
@@ -48,59 +48,61 @@ public class ProductService {
         return productRepository.save(product);
 
     }
-        public Product  getProduct(long id){
-        LOGGER.info("Retrieving product ()",id );
+
+    public Product getProduct(long id) {
+        LOGGER.info("Retrieving product ()", id);
 
         Optional<Product> productOptional = productRepository.findById(id);
 
 ////        if (productOptional.isPresent()) {
 ////            return productOptional.get();
-////        } else {
+////        } else if{
 ////    throw new ResourceNotFoundException("Product" +id + "not found.");
 //}
 
 
-         return productRepository.findById(id)
-        //lambda expressions
-        .orElseThrow(() -> new ResourceNotFoundException(
-                    "Product" +id + "not found."));
-        }
-         public Page<Product> getProducts(GetProductsRequest request, Pageable pageable){
+        return productRepository.findById(id)
+                //lambda expressions
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Product" + id + "not found."));
+    }
+
+    public Page<Product> getProducts(GetProductsRequest request, Pageable pageable) {
         LOGGER.info("Searching products :()", request);
-        if (request!= null){
-            if(request.getPartialName() != null && request.getMinQuantity() !=null){
-            return productRepository.findByNameContainingAndQuantityGreaterThanEqual(request.getPartialName(),
-            request,getQuantity(),pageable;
 
-             }else if (request.getPartialName() != null) {
+        if (request != null) {
+            if (request.getPartialName() != null &&
+                    request.getMinQuantity() != null) {
+
+                return productRepository.findByNameContainingAndQuantityGreaterThanEqual(request.getPartialName(),
+                        request.getMinQuantity(), pageable);
+            } else if (request.getPartialName() != null) {
                 return productRepository.findByNameContaining(
-                        (String) request.getPartialName(), pageable);
+                        request.getPartialName(), pageable);
             }
-        }
-            return productRepository.findAll(pageable);
-         
+        return productRepository.findAll(pageable);
 
-
-        public Product updateProduct(long id, SaveProductRequest request){
-        LOGGER.info("Updating product {}:{}",id , request);
+        public Product updateProduct ( long id, SaveProductRequest request){
+            LOGGER.info("Updating product {}:{}", id, request);
             Product product = getProduct(id);
             BeanUtils.copyProperties(request, product);
             return (Page<Product>) productRepository.save(product);
 
-        public void deleteProduct(long id);
-             LOGGER.info("Deleting product {}", id);
+            public void deleteProduct(long id);
+            LOGGER.info("Deleting product {}", id);
             productRepository.deleteById(id);
         }
+
+        private void getQuantity{
+
+        public Product updateProduct ( long id, SaveProductRequest request){
+            return null;
+
+        public void deleteProduct ( long id){
+
+
+        public Page<Product> getProducts (GetProductsRequest pageable){
+
+        }
+    }
 }
-
-    private void getQuantity() {
-    }
-
-    public Product updateProduct(long id, SaveProductRequest request) {
-        return null;
-    }
-
-    public void deleteProduct(long id) {
-    }
-}
-   

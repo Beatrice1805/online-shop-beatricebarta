@@ -1,6 +1,7 @@
 package org.fastrackit.online.shop.transfer.product;
 
 public class GetProductsRequest {
+    public GetProductsRequest pageable;
     private String partialName;
     private Integer minQuantity;
 

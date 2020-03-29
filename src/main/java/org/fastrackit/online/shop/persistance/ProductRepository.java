@@ -1,4 +1,4 @@
-package org.fastrackit.online.shop.persistance.persistance;
+package org.fastrackit.online.shop.persistance;
 
 import org.fastrackit.online.shop.domain.Product;
 import org.springframework.data.domain.Page;

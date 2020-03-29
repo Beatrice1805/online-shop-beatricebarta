@@ -16,15 +16,15 @@ import javax.validation.Valid;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/products)")
 public class ProductController {
+
     private final ProductService productService;
 
-    @Autowired
+@Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
-
     @PostMapping
     public ResponseEntity<Product> createProduct(
             @Valid @RequestBody SaveProductRequest request) {
@@ -32,30 +32,28 @@ public class ProductController {
 
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
-
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable long id) {
         Product product = productService.getProduct(id);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
-
     @GetMapping
-    public ResponseEntity<Page<Product>> getProducts(
+    public ResponseEntity<Page<Product>>gerProducts(
             GetProductsRequest request, Pageable pageable) {
-        Page<Product> products = productService.getProducts(request, pageable);
+        Page<Product> products = productService.getProducts(request.pageable);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
-
+    @PutMapping()
     public ResponseEntity<Product> updateProduct(
-            @PathVariable long id, @Valid SaveProductRequest request) {
+            @PathVariable long id, @Valid @RequestBody SaveProductRequest request) {
         Product product = productService.updateProduct(id, request);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
- //   @RequestMapping(method = RequestMethod.DELETE, path = "/{id}")
+  //  @RequestMapping(method = RequestMethod.DELETE, path = "/{id}")
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteProduct(@PathVariable long id){
-        productService.deleteProduct(id);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
-
+    public ResponseEntity<Void> deleteProduct(@PathVariable long id){
+    productService.deleteProduct(id);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 }
