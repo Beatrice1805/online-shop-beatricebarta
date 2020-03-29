@@ -13,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -96,13 +95,19 @@ public class ProductService {
         private void getQuantity{
 
         public Product updateProduct ( long id, SaveProductRequest request){
-            return null;
+                    return null;
 
-        public void deleteProduct ( long id){
+                    public void deleteProduct ( long id){
 
 
-        public Page<Product> getProducts (GetProductsRequest pageable){
+                        public Page<Product> getProducts (GetProductsRequest pageable){
 
-        }
+                        }
+                    }
+                }
+
+    public void deleteProduct() {
     }
-}
+
+    public void deleteProduct() {
+    }

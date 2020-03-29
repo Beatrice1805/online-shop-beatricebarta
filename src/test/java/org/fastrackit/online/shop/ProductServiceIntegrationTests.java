@@ -3,6 +3,7 @@ package org.fastrackit.online.shop;
 import org.fastrackit.online.shop.domain.Product;
 import org.fastrackit.online.shop.exception.ResourceNotFoundException;
 import org.fastrackit.online.shop.service.ProductService;
+import org.fastrackit.online.shop.steps.ProductTestSteps;
 import org.fastrackit.online.shop.transfer.product.SaveProductRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,17 +18,21 @@ import static org.hamcrest.Matchers.greaterThan;
 
 @SpringBootTest
 public class ProductServiceIntegrationTests {
+
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private ProductTestSteps productTestSteps;
 
     @Test
 
    void createProduct_whenValidRequest_thenProductIsCreated(){
-        createProduct();
+        productTestSteps.createProduct();
     }
 
     @Test
-void createProduct_whenMissingName_thenExceptionIsThrown() {
+    void createProduct_whenMissingName_thenExceptionIsThrown() {
         SaveProductRequest request = new SaveProductRequest();
         request.setQuantity(1);
         request.setPrice(100.0);
@@ -42,7 +47,7 @@ void createProduct_whenMissingName_thenExceptionIsThrown() {
     }
     @Test
     void getProduct_whenExistingProduct_thenReturnProduct() {
-        Product product = createProduct();
+        Product product = productTestSteps.createProduct();
 
         Product response = productService.getProduct(product.getId());
 
@@ -54,7 +59,6 @@ void createProduct_whenMissingName_thenExceptionIsThrown() {
         assertThat(response.getDescription(), is(product.getDescription()));
         assertThat(response.getImageURL(), is(product.getImageURL()));
 
-
     }
     @Test
     void getProduct_whenNonExistingProduct_thenThrowResourceNotFoundException(){
@@ -64,7 +68,7 @@ void createProduct_whenMissingName_thenExceptionIsThrown() {
     }
 @Test
     void updateProduct_whenValidRequest_thenReturnUpdatedProduct(){
-        Product product = createProduct();
+        Product product = productTestSteps.createProduct();
         SaveProductRequest request = new SaveProductRequest();
         request.setName(product.getName() + "updated");
         request.setDescription(product.getDescription() + "updated");
@@ -73,6 +77,7 @@ void createProduct_whenMissingName_thenExceptionIsThrown() {
 
 
         Product updatedProduct = productService.updateProduct(product.getId(),request);
+
         assertThat( updatedProduct,notNullValue());
         assertThat(updatedProduct.getId(),is (product.getId()));
         assertThat(updatedProduct.getName(),is(request.getName()));
@@ -83,7 +88,7 @@ void createProduct_whenMissingName_thenExceptionIsThrown() {
 }
     @Test
     void deleteProduct_whenExistingProduct_thenProductDoesNotExistAnymore(){
-        Product product = createProduct ();
+        Product product = productTestSteps.createProduct ();
 
         productService.deleteProduct(product.getId());
 
@@ -92,20 +97,6 @@ void createProduct_whenMissingName_thenExceptionIsThrown() {
 
     }
 
-    private Product createProduct() {
-        SaveProductRequest request = new SaveProductRequest();
-        request.setName("Phone");
-        request.setQuantity(100);
-        request.setPrice(300.5);
 
-        Product product =productService.createProduct(request);
-
-        assertThat(product,notNullValue());
-        assertThat(product.getId(),greaterThan(0L));
-        assertThat(product.getName(), is(request.getName()));
-        assertThat(product.getPrice(),is(request.getPrice()));
-        assertThat(product.getQuantity(), is(request.getQuantity()));
-
-        return product;
     }
 }
