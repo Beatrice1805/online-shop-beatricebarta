@@ -96,6 +96,7 @@ import java.util.logging.Logger;
             productDto.setPrice(nextProduct.getPrice());
             productDtos.add(productDto);
         }
+
         cartResponse.setProducts(productDtos);
 
          return cartResponse;
