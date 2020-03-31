@@ -83,7 +83,7 @@ public class ProductService {
             }
         return productRepository.findAll(pageable);
 
-        public Product updateProduct ( long id, SaveProductRequest request){
+        public Product updateProduct(long id, SaveProductRequest, request){
             LOGGER.info("Updating product {}:{}", id, request);
             Product product = getProduct(id);
             BeanUtils.copyProperties(request, product);

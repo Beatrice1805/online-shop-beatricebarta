@@ -1,0 +1,33 @@
+package org.fastrackit.online.shop.web;
+
+import org.fastrackit.online.shop.transfer.cart.AddProductsToCartRequest;
+import org.fastrackit.online.shop.transfer.cart.CartResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import javax.validation.Valid;
+
+public class CartController {
+
+    this.cartService =cartService;
+
+}
+    //POST means create ..we're doing createOrUpdate = > PUT
+    @PutMapping
+    public ResponseEntity<Void > addProductsToCart(
+        @Valid @RequestBody AddProductsToCartRequest request) {
+        cartService.addProductToCart(request);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+        @GetMapping("/id")
+                public ResponseEntity<CartResponse> getCart(PathVariable("id") long customerId){
+                CartResponse cart =cartService.getCart(customerId);
+                return new ResponseEntity<>(cart,HttpStatus.OK);
+
+        }
+
+        }

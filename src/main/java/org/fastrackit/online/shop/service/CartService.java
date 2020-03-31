@@ -55,8 +55,7 @@ import java.util.logging.Logger;
         public void addProductsToCart(AddProductsToCartRequest request) {
         LOGGER.info("Adding products to cart:{}" + request);
 
-        Cart cart;
-        cart = cartRepository.findById(request.getCustomerId())
+        Cart cart = cartRepository.findById(request.getCustomerId())
             .orElse(new Cart());
 
         if ( cart.getCustomer() == null){
@@ -75,7 +74,7 @@ import java.util.logging.Logger;
 
     @Transactional
     public CartResponse getCart(long customerId){
-        LOGGER.info( "Retrieving cart items for customer{}" , customerId);
+        LOGGER.info("Retrieving cart items for customer{}" , customerId);
 
     CartResponse cart = cartRepository.findById((customerId)
                 .orElseThrow(() -> new ResourceNotFoundException(
