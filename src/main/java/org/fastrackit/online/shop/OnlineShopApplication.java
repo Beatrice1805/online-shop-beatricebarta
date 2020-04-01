@@ -1,4 +1,9 @@
 package org.fastrackit.online.shop;
 
-public class OnlineShopApplication {
+import org.springframework.boot.SpringApplication;
+
+public class  OnlineShopApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(OnlineShopApplication.class, args);
+    }
 }

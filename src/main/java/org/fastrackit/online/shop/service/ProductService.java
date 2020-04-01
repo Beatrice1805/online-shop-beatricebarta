@@ -3,17 +3,14 @@ package org.fastrackit.online.shop.service;
 import org.fastrackit.online.shop.domain.Product;
 import org.fastrackit.online.shop.exception.ResourceNotFoundException;
 import org.fastrackit.online.shop.persistance.ProductRepository;
-import org.fastrackit.online.shop.transfer.product.GetProductsRequest;
+import org.fastrackit.online.shop.transfer.product.ProductResponse;
 import org.fastrackit.online.shop.transfer.product.SaveProductRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 
 @Service
@@ -22,6 +19,7 @@ public class ProductService {
 
     // Inversion of Control(IoC)
     private final ProductRepository productRepository;
+    private Object GetProductsRequest;
 
     //dependency injection (from Ioc container)
     @Autowired
@@ -37,7 +35,7 @@ public class ProductService {
         return productRepository;
     }
 
-    public Product createProduct(SaveProductRequest request) {
+    public Object createProduct(SaveProductRequest request) {
         LOGGER.info("Creating product {}", request);
         Product product = new Product();
         product.setName(request.getName());
@@ -48,28 +46,43 @@ public class ProductService {
 
         return productRepository.save(product);
 
-    }
 
-    public Product getProduct(long id) {
-        LOGGER.info("Retrieving product ()", id);
+    public ProductResponse getProduct(long id){
+            LOGGER.info("Retrieving product ()", id);
 
-        Optional<Product> productOptional = productRepository.findById(id);
+//optional usage explained
+//  Optional<Product> productOptional = productRepository.findById(id);
 
 ////        if (productOptional.isPresent()) {
 ////            return productOptional.get();
-////        } else if{
+////        } else {
 ////    throw new ResourceNotFoundException("Product" +id + "not found.");
 //}
 
+            Product product = productRepository.findById(id)
+                    //lambda expressions
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Product" + id + "not found."));
 
-        return productRepository.findById(id)
-                //lambda expressions
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Product" + id + "not found."));
-    }
+            return mapProductResponse(product);
+        }
 
-    public Page<Product> getProducts(GetProductsRequest request, Pageable pageable) {
-        LOGGER.info("Searching products :()", request);
+            private ProductResponse mapProductResponse(Product product){
+
+            ProductResponse productDto = new ProductResponse();
+            productDto.setId(product.getId());
+            productDto.setName(product.getName());
+            productDto.setPrice(product.getPrice());
+            productDto.setQuantity(product.getQuantity());
+            productDto.setDescription(product.getDescription());
+            productDto.setImageURL(product.getImageURL());
+
+            return productDto;
+
+        }
+
+            public Page<Product> getProducts(GetProductsRequest request, Pageable pageable) {
+                LOGGER.info("Searching products :{}", request);
 
         if (request != null) {
             if (request.getPartialName() != null &&
@@ -94,9 +107,9 @@ public class ProductService {
             productRepository.deleteById(id);
         }
 
-        private void getQuantity{
+        private void getQuantity {
 
-        public Product updateProduct ( long id, SaveProductRequest request){
+                public Product updateProduct ( long id, SaveProductRequest request){
                     return null;
 
                     public void deleteProduct ( long id){
@@ -108,8 +121,24 @@ public class ProductService {
                     }
                 }
 
-    public void deleteProduct() {
-    }
+                public void deleteProduct () {
+                }
 
-    public void deleteProduct() {
-    }
+                public void deleteProduct () {
+                }
+
+                public void getProducts () {
+                }
+
+                public void getProducts () {
+                }
+
+                public void updateProduct () {
+                }
+
+                public void deleteProduct () {
+                }
+
+                public void findProduct {
+                }
+            }

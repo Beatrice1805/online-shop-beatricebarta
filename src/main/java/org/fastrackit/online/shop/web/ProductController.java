@@ -4,7 +4,6 @@ import org.fastrackit.online.shop.domain.Product;
 import org.fastrackit.online.shop.service.ProductService;
 import org.fastrackit.online.shop.transfer.product.GetProductsRequest;
 import org.fastrackit.online.shop.transfer.product.SaveProductRequest;
-import org.hibernate.sql.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

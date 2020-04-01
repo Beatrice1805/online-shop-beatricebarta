@@ -20,12 +20,11 @@ import java.util.logging.Logger;
 
 @Service
     public class CartService {
-        private static final Logger LOGGER = (Logger) LoggerFactory.getLogger(CartService.class);
+    private static final Logger LOGGER = (Logger) LoggerFactory.getLogger(CartService.class);
 
-        private final CartRepository cartRepository;
-        private final CustomerService customerService;
-        private final ProductService productService;
-
+    private final CartRepository cartRepository;
+    private final CustomerService customerService;
+    private final ProductService productService;
 
 
     public static Logger getLOGGER() {
@@ -45,49 +44,50 @@ import java.util.logging.Logger;
     }
 
     @Autowired
-        public CartService(CartRepository cartRepository,
-                           CustomerService customerService, ProductService productService) {
+    public CartService(CartRepository cartRepository,
+                       CustomerService customerService, ProductService productService) {
         this.cartRepository = cartRepository;
         this.customerService = customerService;
         this.productService = productService;
     }
+
     @Transactional
-        public void addProductsToCart(AddProductsToCartRequest request) {
+    public void addProductsToCart(AddProductsToCartRequest request) {
         LOGGER.info("Adding products to cart:{}" + request);
 
         Cart cart = cartRepository.findById(request.getCustomerId())
-            .orElse(new Cart());
+                .orElse(new Cart());
 
-        if ( cart.getCustomer() == null){
-                Customer customer = customerService.getCustomer((request.getCustomerId()));
+        if (cart.getCustomer() == null) {
+            Customer customer = customerService.getCustomer((request.getCustomerId()));
 
-                cart.setCustomer(customer);
+            cart.setCustomer(customer);
         }
-            for (Long id :request.getProductIds()){
-                Product product = productService.getProduct(id);
-                cart.addTProductToCart(product);
-            }
-            cartRepository.save(cart);
+        for (Long id : request.getProductIds()) {
+            Product product = productService.findProduct(id);
+            cart.addTProductToCart(product);
+        }
+        cartRepository.save(cart);
     }
 
     //returning DTO to avoid lazy loading exceptions
 
     @Transactional
-    public CartResponse getCart(long customerId){
-        LOGGER.info("Retrieving cart items for customer{}" , customerId);
+    public CartResponse getCart(long customerId) {
+        LOGGER.info("Retrieving cart items for customer{}", customerId);
 
-    CartResponse cart = cartRepository.findById((customerId)
+        CartResponse cart = cartRepository.findById((customerId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Cart" + customerId + "does not exist.")));
 
         CartResponse cartResponse = new CartResponse();
         cartResponse.setId(cart.getId());
 
-        Set<ProductInCartResponse> productDtos= new HashSet<>();
+        Set<ProductInCartResponse> productDtos = new HashSet<>();
 
         Iterator<ProductInCartResponse> productIterator = cart.getProducts().iterator();
 
-        while(productIterator.hasNext()){
+        while (productIterator.hasNext()) {
             ProductInCartResponse nextProduct = productIterator.next();
 
             ProductInCartResponse productDto = new ProductInCartResponse();
@@ -98,8 +98,7 @@ import java.util.logging.Logger;
 
         cartResponse.setProducts(productDtos);
 
-         return cartResponse;
-    }
-
+        return cartResponse;
 
     }
+}
