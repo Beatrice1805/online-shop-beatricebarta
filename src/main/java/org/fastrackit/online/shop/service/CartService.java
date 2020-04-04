@@ -74,7 +74,7 @@ import java.util.logging.Logger;
 
     @Transactional
     public CartResponse getCart(long customerId) {
-        LOGGER.info("Retrieving cart items for customer{}", customerId);
+        LOGGER.info("Retrieving cart items for customer:{}",customerId);
 
         CartResponse cart = cartRepository.findById((customerId)
                 .orElseThrow(() -> new ResourceNotFoundException(

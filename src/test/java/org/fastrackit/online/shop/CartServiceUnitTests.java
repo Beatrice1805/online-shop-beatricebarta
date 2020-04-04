@@ -53,7 +53,7 @@ public class CartServiceUnitTests {
 
           when(productService.findProduct(anyLong()).thenReturn(product));
 
-          when (cartRepository.save(any(Cart.class)));
+          when(cartRepository.save(any(Cart.class)));
 
           AddProductsToCartRequest request = new AddProductsToCartRequest();
 

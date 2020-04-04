@@ -3,6 +3,7 @@ package org.fastrackit.online.shop.service;
 import org.fastrackit.online.shop.domain.Product;
 import org.fastrackit.online.shop.exception.ResourceNotFoundException;
 import org.fastrackit.online.shop.persistance.ProductRepository;
+import org.fastrackit.online.shop.transfer.product.GetProductsRequest;
 import org.fastrackit.online.shop.transfer.product.ProductResponse;
 import org.fastrackit.online.shop.transfer.product.SaveProductRequest;
 import org.slf4j.Logger;
@@ -12,14 +13,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
+import java.awt.print.Pageable;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class ProductService {
     private static final Logger LOGGER = LoggerFactory.getLogger((ProductService.class));
 
+    public Object getRequest() {
+        return request;
+    }
+
+    public void setRequest(Object request) {
+        this.request = request;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
     // Inversion of Control(IoC)
-    private final ProductRepository productRepository;
+    private final ProductRepository productRepository = null;
     private Object GetProductsRequest;
+    private Object request;
 
     //dependency injection (from Ioc container)
     @Autowired
@@ -27,16 +50,8 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public static Logger getLOGGER() {
-        return LOGGER;
-    }
-
-    public ProductRepository getProductRepository() {
-        return productRepository;
-    }
-
-    public Object createProduct(SaveProductRequest request) {
-        LOGGER.info("Creating product {}", request);
+    public ProductResponse createProduct(SaveProductRequest request) {
+    LOGGER.info("Creating product {}", request);
         Product product = new Product();
         product.setName(request.getName());
         product.setDescription(request.getDescription());
@@ -44,9 +59,11 @@ public class ProductService {
         product.setQuantity(request.getQuantity());
         product.setImageURL(request.getImageURL());
 
-        return productRepository.save(product);
+        Product savedProduct =productRepository.save(product);
 
+        return mapProductResponse(savedProduct);
 
+    }
     public ProductResponse getProduct(long id){
             LOGGER.info("Retrieving product ()", id);
 
@@ -59,55 +76,83 @@ public class ProductService {
 ////    throw new ResourceNotFoundException("Product" +id + "not found.");
 //}
 
-            Product product = productRepository.findById(id)
-                    //lambda expressions
-                    .orElseThrow(() -> new ResourceNotFoundException(
-                            "Product" + id + "not found."));
-
+            Product product = findProduct(id);
             return mapProductResponse(product);
         }
+        public  Product findProduct(long id){
+        return productRepository.findById(id)
+                //lambda expressions
+            .orElseThrow(() -> new ResourceNotFoundException(
+            "Product" + id + "not found"));
+        }
 
-            private ProductResponse mapProductResponse(Product product){
 
-            ProductResponse productDto = new ProductResponse();
+        private ProductResponse mapProductResponse(Product product){
+        ProductResponse productDto = new ProductResponse();
             productDto.setId(product.getId());
             productDto.setName(product.getName());
             productDto.setPrice(product.getPrice());
             productDto.setQuantity(product.getQuantity());
             productDto.setDescription(product.getDescription());
             productDto.setImageURL(product.getImageURL());
-
             return productDto;
 
         }
 
-            public Page<Product> getProducts(GetProductsRequest request, Pageable pageable) {
+            public void getProducts(GetProductsRequest request, Pageable pageable) {
                 LOGGER.info("Searching products :{}", request);
 
-        if (request != null) {
-            if (request.getPartialName() != null &&
-                    request.getMinQuantity() != null) {
+                Page <Product> productsPage;
 
-                return productRepository.findByNameContainingAndQuantityGreaterThanEqual(request.getPartialName(),
-                        request.getMinQuantity(), pageable);
-            } else if (request.getPartialName() != null) {
-                return productRepository.findByNameContaining(
-                        request.getPartialName(), pageable);
+            if (request != null) {
+                if (request.getPartialName() != null &&
+                        request.getMinQuantity() != null) {
+
+                    productsPage = productRepository.findByNameContainingAndQuantityGreaterThanEqual(
+                            request.getPartialName(), request.getMinQuantity(),
+                            (org.springframework.data.domain.Pageable) pageable);
+                } else if (request.getPartialName() != null) {
+                    productsPage = productRepository.findByNameContaining(
+                            request.getPartialName(), (org.springframework.data.domain.Pageable) pageable);
+                }
+            } else{
+                productsPage = productRepository.findAll((org.springframework.data.domain.Pageable) pageable);
             }
-        return productRepository.findAll(pageable);
+        }  else{
+             productsPage = productRepository.findAll((org.springframework.data.domain.Pageable) pageable);
+    }
+            List<ProductResponse> productDtos = new ArrayList<>();
+                for (Product product : productsPage.getContent()){
+                 ProductResponse productDto = mapProductResponse(product);
+                 productDtos.add(productDto);
 
-        public Product updateProduct(long id, SaveProductRequest, request){
-            LOGGER.info("Updating product {}:{}", id, request);
-            Product product = getProduct(id);
+    }
+            return new PageImplementation <>(productDtos, pageable, productsPage.getTotalElements());
+    }
+
+        public ProductResponse updateProduct(long id, SaveProductRequest request) {
+                    LOGGER.info("Updating product {}:{}", id, request);
+                    Product product = findProduct(id);
+
             BeanUtils.copyProperties(request, product);
-            return (Page<Product>) productRepository.save(product);
-
+                    Product savedProduct = productRepository.save(product);
+                    return mapProductReponse(savedProduct);
+                }
             public void deleteProduct(long id);
+
+    public Page<ProductResponse> getProducts(org.fastrackit.online.shop.transfer.product.GetProductsRequest pageable) {
+    }
             LOGGER.info("Deleting product {}", id);
             productRepository.deleteById(id);
         }
 
-        private void getQuantity {
+    private Product findProduct(long id) {
+    }
+
+    private Page<Product> mapProductResponse(Product savedProduct) {
+    }
+
+    private void getQuantity{
 
                 public Product updateProduct ( long id, SaveProductRequest request){
                     return null;
@@ -117,28 +162,7 @@ public class ProductService {
 
                         public Page<Product> getProducts (GetProductsRequest pageable){
 
-                        }
-                    }
-                }
+                        }}
 
-                public void deleteProduct () {
-                }
-
-                public void deleteProduct () {
-                }
-
-                public void getProducts () {
-                }
-
-                public void getProducts () {
-                }
-
-                public void updateProduct () {
-                }
-
-                public void deleteProduct () {
-                }
-
-                public void findProduct {
-                }
-            }
+    private void mapProductResponse() {
+    }

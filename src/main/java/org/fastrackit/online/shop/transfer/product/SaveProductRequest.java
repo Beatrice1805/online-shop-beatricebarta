@@ -1,5 +1,6 @@
 package org.fastrackit.online.shop.transfer.product;
 
+import javax.naming.Name;
 import javax.validation.constraints.NotNull;
 
 public class SaveProductRequest {
@@ -14,14 +15,16 @@ public class SaveProductRequest {
     private Integer quantity;
     private String imageURL;
 
-    public String getName() {
+    public String mapProductResponse() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
-
+    public String getName() {
+        return name;
+    }
     public String getDescription() {
         return description;
     }

@@ -4,6 +4,7 @@ import org.fastrackit.online.shop.domain.Product;
 import org.fastrackit.online.shop.exception.ResourceNotFoundException;
 import org.fastrackit.online.shop.service.ProductService;
 import org.fastrackit.online.shop.steps.ProductTestSteps;
+import org.fastrackit.online.shop.transfer.product.ProductResponse;
 import org.fastrackit.online.shop.transfer.product.SaveProductRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,6 @@ import org.springframework.transaction.TransactionSystemException;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
 
 @SpringBootTest
 public class ProductServiceIntegrationTests {
@@ -47,9 +47,9 @@ public class ProductServiceIntegrationTests {
     }
     @Test
     void getProduct_whenExistingProduct_thenReturnProduct() {
-        Product product = productTestSteps.createProduct();
+        ProductResponse product = productTestSteps.createProduct();
 
-        Product response = productService.getProduct(product.getId());
+        ProductResponse response = productService.getProduct(product.getId());
 
         assertThat(response, notNullValue());
         assertThat(response.getId(), is(product.getId()));
@@ -68,7 +68,7 @@ public class ProductServiceIntegrationTests {
     }
 @Test
     void updateProduct_whenValidRequest_thenReturnUpdatedProduct(){
-        Product product = productTestSteps.createProduct();
+        ProductResponse product = productTestSteps.createProduct();
         SaveProductRequest request = new SaveProductRequest();
         request.setName(product.getName() + "updated");
         request.setDescription(product.getDescription() + "updated");
@@ -76,11 +76,11 @@ public class ProductServiceIntegrationTests {
         request.setQuantity(product.getQuantity() + 10);
 
 
-        Product updatedProduct = productService.updateProduct(product.getId(),request);
+        ProductResponse updatedProduct = productService.updateProduct(product.getId(),request);
 
         assertThat( updatedProduct,notNullValue());
         assertThat(updatedProduct.getId(),is (product.getId()));
-        assertThat(updatedProduct.getName(),is(request.getName()));
+        assertThat(updatedProduct.getName(),is(request.mapProductResponse()));
         assertThat(updatedProduct.getDescription(),is(request.getDescription()));
         assertThat(updatedProduct.getPrice(),is(request.getPrice()));
         assertThat(updatedProduct.getQuantity(), is(request.getQuantity()));
@@ -88,7 +88,7 @@ public class ProductServiceIntegrationTests {
 }
     @Test
     void deleteProduct_whenExistingProduct_thenProductDoesNotExistAnymore(){
-        Product product = productTestSteps.createProduct ();
+        ProductResponse product = productTestSteps.createProduct ();
 
         productService.deleteProduct(product.getId());
 
@@ -96,7 +96,5 @@ public class ProductServiceIntegrationTests {
                 () -> productService.getProduct(product.getId()));
 
     }
-
-
     }
-}
+
