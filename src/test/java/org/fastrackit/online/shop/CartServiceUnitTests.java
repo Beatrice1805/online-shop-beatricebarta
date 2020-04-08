@@ -1,13 +1,13 @@
 package org.fastrackit.online.shop;
 
-import org.fastrackit.online.shop.domain.Cart;
-import org.fastrackit.online.shop.domain.Customer;
-import org.fastrackit.online.shop.domain.Product;
-import org.fastrackit.online.shop.persistance.CartRepository;
-import org.fastrackit.online.shop.service.CartService;
-import org.fastrackit.online.shop.service.CustomerService;
-import org.fastrackit.online.shop.service.ProductService;
-import org.fastrackit.online.shop.transfer.cart.AddProductsToCartRequest;
+import org.fasttrackit.online.shop.domain.Cart;
+import org.fasttrackit.online.shop.domain.Customer;
+import org.fasttrackit.online.shop.domain.Product;
+import org.fasttrackit.online.shop.persistance.CartRepository;
+import org.fasttrackit.online.shop.service.CartService;
+import org.fasttrackit.online.shop.service.CustomerService;
+import org.fasttrackit.online.shop.service.ProductService;
+import org.fasttrackit.online.shop.transfer.cart.AddProductsToCartRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +16,8 @@ import org.mockito.Mock;
 import java.util.Collections;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 

@@ -1,15 +1,13 @@
 package org.fastrackit.online.shop;
 
-import org.fastrackit.online.shop.domain.Cart;
-import org.fastrackit.online.shop.domain.Customer;
-import org.fastrackit.online.shop.domain.Product;
-import org.fastrackit.online.shop.service.CartService;
 import org.fastrackit.online.shop.steps.CustomerTestSteps;
 import org.fastrackit.online.shop.steps.ProductTestSteps;
-import org.fastrackit.online.shop.transfer.cart.AddProductsToCartRequest;
-import org.fastrackit.online.shop.transfer.cart.CartResponse;
-import org.fastrackit.online.shop.transfer.cart.ProductInCartResponse;
-import org.fastrackit.online.shop.transfer.product.ProductResponse;
+import org.fasttrackit.online.shop.domain.Customer;
+import org.fasttrackit.online.shop.service.CartService;
+import org.fasttrackit.online.shop.transfer.cart.AddProductsToCartRequest;
+import org.fasttrackit.online.shop.transfer.cart.CartResponse;
+import org.fasttrackit.online.shop.transfer.cart.ProductInCartResponse;
+import org.fasttrackit.online.shop.transfer.product.ProductResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

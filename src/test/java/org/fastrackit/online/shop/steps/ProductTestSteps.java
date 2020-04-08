@@ -1,9 +1,8 @@
 package org.fastrackit.online.shop.steps;
 
-import org.fastrackit.online.shop.domain.Product;
-import org.fastrackit.online.shop.service.ProductService;
-import org.fastrackit.online.shop.transfer.product.ProductResponse;
-import org.fastrackit.online.shop.transfer.product.SaveProductRequest;
+import org.fasttrackit.online.shop.service.ProductService;
+import org.fasttrackit.online.shop.transfer.product.ProductResponse;
+import org.fasttrackit.online.shop.transfer.product.SaveProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
